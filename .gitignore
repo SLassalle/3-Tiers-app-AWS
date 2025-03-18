@@ -1,7 +1,8 @@
 # Terraform
 *.tfstate
 *.tfstate.backup
-.terraform/
+.terraform
+terraform.tfvars
 
 # Ansible
 *.retry
@@ -12,3 +13,6 @@ kubeconfig.yaml
 # Logs et fichiers sensibles
 *.log
 .env
+
+# AWS
+.aws
