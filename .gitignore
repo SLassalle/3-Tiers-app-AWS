@@ -1,0 +1,14 @@
+# Terraform
+*.tfstate
+*.tfstate.backup
+.terraform/
+
+# Ansible
+*.retry
+
+# Kubernetes
+kubeconfig.yaml
+
+# Logs et fichiers sensibles
+*.log
+.env
