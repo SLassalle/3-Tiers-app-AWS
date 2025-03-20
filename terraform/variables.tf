@@ -57,5 +57,4 @@ variable "ssh_key_name" {
 variable "allowed_ips" {
   description = "Liste des IPs autorisées à accéder en SSH au Bastion"
   type        = list(string)
-  default     = ["YOUR_IP/32"]
 }

@@ -64,21 +64,30 @@ jobs:
         if: github.event_name == 'pull_request'
         env:
           PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+          FMT_OUTCOME: ${{ steps.fmt.outcome }}
+          INIT_OUTCOME: ${{ steps.init.outcome }}
+          VALIDATE_OUTCOME: ${{ steps.validate.outcome }}
+          VALIDATE_OUTPUT: ${{ steps.validate.outputs.stdout }}
+          PLAN_OUTCOME: ${{ steps.plan.outcome }}
+          ACTOR: ${{ github.actor }}
+          EVENT_NAME: ${{ github.event_name }}
+          WORKING_DIR: ${{ env.tf_actions_working_dir }}
+          WORKFLOW: ${{ github.workflow }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const output = #### Terraform Format and Style 🖌\${{ steps.fmt.outcome }}\
-            #### Terraform Initialization ⚙️\${{ steps.init.outcome }}\
-            #### Terraform Validation 🤖\${{ steps.validate.outcome }}\
+            const output = #### Terraform Format and Style 🖌\${ process.env.FMT_OUTCOME }\
+            #### Terraform Initialization ⚙️\${ process.env.INIT_OUTCOME }\
+            #### Terraform Validation 🤖\${ process.env.VALIDATE_OUTCOME }\
             <details><summary>Validation Output</summary>
 
             \\\\n
-            ${{ steps.validate.outputs.stdout }}
+            ${ process.env.VALIDATE_OUTPUT }
             \\\
 
             </details>
 
-            #### Terraform Plan 📖\${{ steps.plan.outcome }}\
+            #### Terraform Plan 📖\${ process.env.PLAN_OUTCOME }\
 
             <details><summary>Show Plan</summary>
 
@@ -88,7 +97,7 @@ jobs:
 
             </details>
 
-            *Pusher: @${{ github.actor }}, Action: \${{ github.event_name }}\, Working Directory: \${{ env.tf_actions_working_dir }}\, Workflow: \${{ github.workflow }}\*;
+            *Pusher: @${ process.env.ACTOR }, Action: \${ process.env.EVENT_NAME }\, Working Directory: \${ process.env.WORKING_DIR }\, Workflow: \${ process.env.WORKFLOW }\*;
 
             github.rest.issues.createComment({
               issue_number: context.issue.number,
